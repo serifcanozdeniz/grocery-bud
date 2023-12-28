@@ -139,32 +139,60 @@ function clearItems() {
 
 //! localstorage işlemleri
 
-// yerel depoya öğe ekleme işlemi
+// Yerel depoya öğe ekleme işlemi
 function addToLocalStorage(id, value) {
-    const grocery = {id, value};
+    const grocery = { id, value };
     let items = getLocalStorage();
     items.push(grocery);
     localStorage.setItem("list", JSON.stringify(items));
 }
-//localstorage dan verileri alma işlemi
+
+// Local storage'dan verileri alma işlemi
 function getLocalStorage() {
     return localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : [];
 }
 
-function removeFromLocalStorage(id,) {
+// Yerel depodan öğe kaldırma işlemi
+function removeFromLocalStorage(id) {
     let items = getLocalStorage();
 
-    items = items.filter(function(item){
-        if (item.id !==id) {
-            return item;
-        }
-    })
+    items = items.filter(function (item) {
+        return item.id !== id;
+    });
+
+    localStorage.setItem("list", JSON.stringify(items));
 }
 
+// Yerel depodaki öğeyi düzenleme işlemi
 function editLocalStorage(id, value) {
-    
+    let items = getLocalStorage();
+
+    // İlgili öğeyi bul ve güncelle
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].id === id) {
+            items[i].value = value;
+            break;
+        }
+    }
+
+    localStorage.setItem("list", JSON.stringify(items));
 }
 
+// Sayfa yüklendiğinde local storage'dan verileri alıp işleme başlama işlemi
 function setupItems() {
     let items = getLocalStorage();
+    // Burada alınan verilerle sayfanızı güncelleyebilirsiniz
 }
+
+// Örnek kullanım
+addToLocalStorage(1, "Elma");
+addToLocalStorage(2, "Armut");
+
+// İlgili öğeyi kaldırma
+removeFromLocalStorage(1);
+
+// İlgili öğeyi güncelleme
+editLocalStorage(2, "Yenilen Armut");
+
+// Verileri işleme başlama
+setupItems();
